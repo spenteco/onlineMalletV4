@@ -1,0 +1,559 @@
+
+/* ---------------------------------------------------------------------
+    
+------------------------------------------------------------------------ */
+
+body {
+    font-size: 12px;
+    font-family: sans-serif;
+    background-color: #E8EDE0;
+}
+
+pre {
+    white-space: pre-wrap;       /* CSS 3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+#content {
+    width: 900px;
+    margin: auto;
+    background-color: white;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 10px;
+    border: 1px solid #102E37;
+}
+
+#wideContent {
+    width: 100%;
+    background-color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 20px;
+    border: 1px solid #102E37;
+}
+
+h1 {
+    font-size: 18px;
+    font-family: serif;
+    color: #102E37;
+}
+
+h2 {
+    font-size: 16px;
+    font-family: serif;
+    color: #102E37;
+}
+
+h6 {
+    font-size: 14px;
+    font-family: serif;
+    color: #102E37;
+}
+
+#header {
+    border-bottom: 1px solid #102E37;
+    padding-bottom: 40px;
+}
+
+.headerLinkDiv {
+    float: left;
+    padding-right: 20px;
+}
+
+.headerLink {
+    font-family: serif;
+    font-size: 16px;
+}
+
+#headerMessage {
+	color: red;
+	font-weight: bold;
+    font-family: serif;
+    font-size: 16px;
+}
+
+.clearDiv {
+    clear: both;
+}
+
+#leftIndexPane {
+    width: 200px;
+    float: left;
+}
+
+#rightIndexPane {
+    width: 700px;
+    float: right;
+}
+
+.jobDetail_dateTimeRequested {
+    display: inline-block;
+    width: 175px;
+    vertical-align: top;
+}
+
+.jobDetail_jobStatus {
+    display: inline-block;
+    width: 75px;
+    vertical-align: top;
+}
+
+.jobDetail_jobType {
+    display: inline-block;
+    width: 30px;
+    vertical-align: top;
+}
+
+.jobDetail_numberOfTopics {
+    display: inline-block;
+    width: 75px;
+    vertical-align: top;
+}
+
+.jobDetail_corpora {
+    display: inline-block;
+    width: 250px;
+    vertical-align: top;
+}
+
+.jobDetail_chunkSize {
+    display: none;
+}
+
+.jobDetail_jobNotes {
+    display: none;
+}
+
+.listJobDetail_dateTimeRequested {
+    display: inline-block;
+    width: 175px;
+    vertical-align: top;
+}
+
+.listJobDetail_jobStatus {
+    display: inline-block;
+    width: 75px;
+    vertical-align: top;
+}
+
+.listJobDetail_jobType {
+    display: inline-block;
+    width: 30px;
+    vertical-align: top;
+}
+
+.listJobDetail_numberOfTopics {
+    display: inline-block;
+    width: 75px;
+    vertical-align: top;
+}
+
+.listJobDetail_corpora {
+    display: inline-block;
+    width: 225px;
+    vertical-align: top;
+}
+
+.listJobDetail_chunkSize {
+    display: inline-block;
+    width: 30px;
+    vertical-align: top;
+}
+
+.listJobDetail_jobNotes {
+    display: inline-block;
+    width: 250px;
+    vertical-align: top;
+}
+
+/* ---------------------------------------------------------------------
+    
+------------------------------------------------------------------------ */
+
+tr {
+    vertical-align: top;
+}
+
+th {
+    text-align: left;
+    padding-right: 1em;
+}
+
+td {
+    text-align: left;
+    padding-right: 1em;
+}
+
+/* ---------------------------------------------------------------------
+    FOR THE STOPWORD AND CORPUS PAGES
+------------------------------------------------------------------------ */
+
+.fileSelectorLabel {
+    width: 15em;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#existingCorpusInput {
+    width: 25em;
+}
+
+.fileButton {
+}
+
+.myFileButton {
+    width: 10em;
+}
+
+.fileUploadList {
+}
+
+.fileListFileName {
+    width: 30em;
+    display: inline-block;
+}
+
+.fileListFileType {
+    width: 10em;
+    display: inline-block;
+}
+
+.fileListFileSize {
+    width: 10em;
+    display: inline-block;
+}
+
+.fileListStatus {
+    padding-left: 2em;
+    width: 10em;
+    display: inline-block;
+}
+
+#existingFiles {
+    display: none;
+}
+
+#fileUploadUser {
+    display: none;
+}
+
+.folderLi {
+    list-style-image:url('/staticOnlineMalletV4/img/Folder.png');
+    cursor: pointer;
+}
+
+.textLi {
+    list-style: none;
+    margin-left: -2em;
+    cursor: auto;
+}
+
+.textFileName {
+    width: 25em;
+}
+
+.textFileGitDetails {
+    display: none;
+    padding-left: 5em;
+}
+    
+#fileLists {
+    display: none;
+}
+    
+#fileListTable {
+    border-spacing: 2em;
+}   
+    
+.fileTd {
+    border: 1px solid black;
+    padding: 1em;
+    margin: 1em;
+}
+    
+
+.fileListEntry {
+    display: inline-block;
+    cursor: move;
+}
+
+.fileMoved {
+    color: red;
+    font-weight: bold;
+}
+
+.loadingMessage {
+    color: red;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+#progressDialog {
+    display: none;
+    position: absolute;
+    top: 20em;
+    left: 20em;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    padding-left: 5em;
+    padding-right: 5em;
+    border: 2px solid black;
+    background-color: white;
+    vertical-align: center;
+}
+
+#stopwordFiles {
+    width: 875px;
+}
+
+/* ---------------------------------------------------------------------
+    
+------------------------------------------------------------------------ */
+
+.twoPanes {
+    width: 900px;
+}
+
+.leftPane {
+    width: 540px;
+    float: left;
+    margin-right: 10px;
+}
+
+.rightPane {
+    width: 350px;
+    float: left;
+}
+
+.myCollapsibleLi {
+    border: 1px solid black;
+    overflow: auto;
+    height: 400px;
+    padding-top: 1em;
+}
+
+.myFolderLi {
+    list-style: none;
+    margin-left: -2em;
+}
+
+.myFolderLiContents {
+    display: none;
+}
+
+.myTextLi {
+    list-style: none;
+    margin-left: -2em;
+}
+
+.parameterLabel {
+    display: inline-block;
+    width: 15em;
+    vertical-align: top;
+}
+    
+.parameterInputSelect {
+    width: 15em;
+}
+    
+.parameterInput {
+    width: 15em;
+}
+
+.parameterHr {
+    margin-right: 4em;
+}
+
+.helpText {
+    border: 1px solid black;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    overflow: auto;
+    height: 400px;
+}
+
+#ldaMessages {
+	padding-left: 10px;
+    clear: both;
+    font-size: 16px;
+    font-weight: bold;
+    color: red;
+}
+
+.addSpaceAtBottom {
+    height: 10em;
+    clear: both;
+}
+
+.infoMessage {
+    font-weight: bold;
+    color: blue;
+}
+
+.errorMessage {
+    font-weight: bold;
+    color: red;
+}
+
+/* ---------------------------------------------------------------------
+    
+------------------------------------------------------------------------ */
+
+.metadataFileName {
+    width: 30em;
+    display: inline-block;
+}
+
+.metadataTypeHeader {
+    width: 6.6em;
+    display: inline-block;
+}
+
+.newMetadataType {
+    width: 5em;
+    display: inline-block;
+}
+
+.metadataTypeDetail {
+    width: 5em;
+    display: inline-block;
+}
+
+.metadataTextLi {
+    list-style: none;
+}
+
+/* ---------------------------------------------------------------------
+    
+------------------------------------------------------------------------ */
+
+.detailsLabel {
+    display: inline-block;
+    width: 20em;
+    vertical-align: top;
+}
+
+.detailsData {
+    display: inline-block;
+    width: 50em;
+    vertical-align: top;
+}
+
+/* ---------------------------------------------------------------------
+    UBER VIZ  
+------------------------------------------------------------------------ */
+
+#numberControls {
+    float: left;
+    font-size: 12px;
+}
+
+#uberVizFileName {
+    display: none;
+}
+
+#uberVizTopicWords {
+    display: none;
+}
+
+#topicWordControls {
+    float: left;
+    margin-top: 4px;
+    margin-left: 100px;
+}
+
+#topicWordsDisplay {
+    display: none;
+    width: 500px;
+    height: 500px;
+    border: 1px solid #102E37;
+    padding: 5px;
+    background-color: #FFF8DC;
+    overflow-y: scroll;
+}
+
+.topicWordDisplayHeader {
+    font-weight: bold;
+}
+
+.topicDetailsHeader {
+    display: none;
+}
+
+.topicDetailsCount {
+    color: #777777;
+}
+
+#textDisplayArea {
+    width: 810px;
+    display: none;
+    border: 1px solid #102E37;
+    background-color: #FFF8DC;
+}
+
+#topicSelector {
+    font-size: 12px;
+    display: none;
+    padding: 5px;
+}
+
+#highlightTextDisplay {
+    width: 800px;
+    height: 500px;
+    overflow-y: scroll;
+    padding: 5px;
+}
+
+#hiddenJobDetails {
+    display: none;
+}
+
+/* ---------------------------------------------------------------------
+    
+------------------------------------------------------------------------ */
+
+#heatMapFileName {
+    display: none;
+}
+
+#heatmapContainer {
+    font-size: 5px;
+    cursor: pointer;
+}
+
+#heatmapContainer>table {
+    border-collapse:collapse;
+}
+
+#heatmapTooltip {
+    display: none;
+    background-color: white;
+    border: 1px solid black;
+    padding: 1em;
+}
+
+/* ---------------------------------------------------------------------
+    
+------------------------------------------------------------------------ */
+
+#droppableCorpusFiles {
+    width: 350px;
+}
+
+#droppableAllFiles {
+    width: 350px;
+}
+
+/* ---------------------------------------------------------------------
+    
+------------------------------------------------------------------------ */
+
+.viewStopwordsSpan {
+    display: inline-block;
+    margin-right: 10px;
+    width: 200px;
+}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div id="contentDiv">
+
+        <div id="leftIndexPane">
+
+            <h3>Corpora</h3>
+            <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/uploadcorpusfiles/">Upload corpus files</a></div>
+            <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/viewcorpusfiles/">View corpus files</a></div>
+            <br/>
+            <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/maintaincorpora/">Edit corpora</a></div>
+            <br/>
+            <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/maintainmetadata/">Edit metadata</a></div>
+        
+        </div>
+
+        <div id="rightIndexPane">
+            
+            <h3>Topic modeling</h3>
+            <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/runlda/">Run LDA topic modeling jobs</a></div>
+            <br/>
+            <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/listjobs/">List <b>all</b> topic modeling jobs and results</a></div>
+        
+        </div>
+
+        <div class="clearDiv"></div>
+
+        <div id="leftIndexPane">
+            
+            <h3>Stopwords</h3>
+            <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/viewstopwords/">View stopwords</a></div>
+            <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/uploadstopwords/">Upload stopwords</a></div>
+        
+        </div>
+
+        <div id="rightIndexPane">
+
+            <h3>Your recent jobs</h3>
+            {% for batchJob in batchJobInformation %}
+                <div>
+                    <span class="jobDetail_dateTimeRequested"><a href="/onlineMalletV4/showjobdetails/?id={{batchJob.id}}">{{batchJob.dateTimeRequested}}</a></span>
+                    <span class="jobDetail_jobStatus">{{batchJob.jobStatus}}</span>
+                    <span class="jobDetail_jobType">{{batchJob.jobType}}</span>
+                    <span class="jobDetail_numberOfTopics">{{batchJob.numberOfTopics}}</span>
+                    <span class="jobDetail_corpora">{{batchJob.corpora}}</span>
+                    <span class="jobDetail_chunkSize">{{batchJob.chunkSize}}</span>
+                    <span class="jobDetail_jobNotes">{{batchJob.jobNotes}}</span>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="clearDiv"></div>
+
+        <div id="leftIndexPane">
+
+        {% if is_superuser %}
+
+            <div id="adminLinks">
+                <h3>Admin functions</h3>
+                <div class="indexLinkDiv"><a class="indexLinkA" href="/onlineMalletV4/admin/">Admin</a></div>
+            </div>
+
+        {% endif %}
+        
+        </div>
+
+        <div id="rightIndexPane">
+            <h3>Job scheduler logs</h3>
+            <div class="indexLinkDiv"><a href="/onlineMalletV4/getresultsfile/?fileName={{cronLogFileName}}">Today's Scheduler Log</a></div>
+        </div>
+
+        <div class="clearDiv"></div>
+        <br/>
+        <hr/>
+        <pre>  
+These pages are an interface to:
+
+McCallum, Andrew Kachites.  "MALLET: A Machine Learning for Language Toolkit."
+    <a rel="nofollow" class="external" href="http://mallet.cs.umass.edu">http://mallet.cs.umass.edu</a>. 2002.
+        </pre>
+
+    </div>
+
+{% endblock %}

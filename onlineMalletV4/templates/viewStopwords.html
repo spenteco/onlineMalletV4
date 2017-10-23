@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div id="contentDiv">
+
+        <h2>View stopwords</h2>
+        
+        <ul class="collapsibleList">
+            
+            {% for owner in owners %}
+                <li class="folderLi">    
+                    {{owner}}
+                    <ul>
+                        {% for stopwordFile in stopwordFiles %}
+                            {% if owner == stopwordFile.owner %}
+                                <li class="textLi">
+                                    <img src="/staticOnlineMalletV4/img/Text-x-generic.png"/>
+                                    <span class="viewStopwordsSpan"><a href="/onlineMalletV4/viewfile/?file={{fileLocation}}{{stopwordFile.subFolder}}{{stopwordFile.fileName}}">{{stopwordFile.fileName}}</a></span>
+                                    <!--<span class="viewStopwordsSpan">{{stopwordFile.notes}}</span>-->
+                                    <span class="viewStopwordsSpan">{{stopwordFile.dateLastModified}}   </span> 
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+            
+        </ul>
+        
+    </div>
+
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/CollapsibleLists.js"/></script>
+    <script type="text/javascript">
+        CollapsibleLists.apply();    
+    </script>
+
+{% endblock %}

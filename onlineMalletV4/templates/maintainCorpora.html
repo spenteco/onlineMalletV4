@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <h2>Edit corpora</h2>
+
+        <span class="fileSelectorLabel">Select existing corpus: </span> <select id="existingCorpusInput">
+                                                                            <option value=""></option>
+                                                                            {% for existingCorpus in existingCorpora %}
+                                                                                <option value="{{existingCorpus.corpusName}}">{{existingCorpus.corpusName}}</option>
+                                                                            {% endfor %}
+                                                                        </select> 
+        
+        <br/><br/>
+        
+        <span class="fileSelectorLabel">or enter: </span> 
+        
+        <br/><br/>
+        
+        <span class="fileSelectorLabel">New corpus name: </span>        <input type="input" name="newCorpusName" id="newCorpusName" class="nameInput" /><br/>
+        <!--<span class="fileSelectorLabel">Notes: </span>                  <textarea rows="4" cols="50" name="notes" id="notes"></textarea><br/>-->
+        
+        <br/><br/>
+        
+        <span class="fileSelectorLabel">Then click . . . </span>        <button class="fileButton" type="button" id="fileSubmitCorpus" onclick="javascript:handleMaintainCorporaGoButton();">Go!</button><br/>
+        
+        <br/><br/>
+        
+        <div id="fileLists">
+            <table id="fileListTable">
+                <tr>
+                    <td><h3 id="corpusHeading"></h3></td>
+                    <td><h3>All Files</h3></td>
+                </tr>
+                <tr>
+                    <td id="droppableCorpusFiles" class="fileTd">
+                    </td>
+                    <td id="droppableAllFiles" class="fileTd">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        
+        {% csrf_token %}
+
+        <span id="fileUploadUser">{{user}}</span>
+        
+        <span id="progressDialog"><img src="/staticOnlineMalletV4/img/progress.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="loadingMessage">Loading files . . . </span></span>
+        
+        <script type="text/javascript" src="/staticOnlineMalletV4/js/jquery-ui-1.10.3.custom.js"/></script>
+        <script type="text/javascript" src="/staticOnlineMalletV4/js/maintainCorpora.js"/></script>
+        <script type="text/javascript" src="/staticOnlineMalletV4/js/CollapsibleLists.js"/></script>
+
+
+{% endblock %}

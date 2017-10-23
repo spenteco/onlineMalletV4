@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h2>List all topic modeling jobs and results</h2>
+
+    <ul class="collapsibleList">
+
+    {% for userId, batchJobs in batchJobInformation.items %}
+
+        {% if userId == requestUser %}
+
+            <li class="folderLi">{{userId}}
+            <ul class=" collapsibleList" style="display: none;">
+
+            {% for batchJob in batchJobs %}
+
+                <li class="textLi" style="margin-bottom: -5px;">
+                    <span class="listJobDetail_dateTimeRequested"><a href="/onlineMalletV4/showjobdetails/?id={{batchJob.id}}">{{batchJob.dateTimeRequested}}</a></span>
+                    <span class="listJobDetail_jobStatus">{{batchJob.jobStatus}}</span>
+                    <span class="listJobDetail_jobType">{{batchJob.jobType}}</span>
+                    <span class="listJobDetail_numberOfTopics">{{batchJob.numberOfTopics}}</span>
+                    <span class="listJobDetail_corpora">{{batchJob.corpora}}</span>
+                    <span class="listJobDetail_chunkSize">{{batchJob.chunkSize}}</span>
+                    <span class="listJobDetail_jobNotes">{{batchJob.jobNotes}}</span>
+                </li>
+
+            {% endfor %}
+
+            </ul>
+            </li>
+
+        {% endif %}
+
+    {% endfor %}
+
+    {% for userId, batchJobs in batchJobInformation.items %}
+
+        {% if userId != requestUser %}
+
+            <li class="folderLi">{{userId}}
+            <ul class=" collapsibleList" style="display: none;">
+
+            {% for batchJob in batchJobs %}
+
+                <li class="textLi" style="margin-bottom: -5px;">
+                    <span class="listJobDetail_dateTimeRequested"><a href="/onlineMalletV4/showjobdetails/?id={{batchJob.id}}">{{batchJob.dateTimeRequested}}</a></span>
+                    <span class="listJobDetail_jobStatus">{{batchJob.jobStatus}}</span>
+                    <span class="listJobDetail_jobType">{{batchJob.jobType}}</span>
+                    <span class="listJobDetail_numberOfTopics">{{batchJob.numberOfTopics}}</span>
+                    <span class="listJobDetail_corpora">{{batchJob.corpora}}</span>
+                    <span class="listJobDetail_chunkSize">{{batchJob.chunkSize}}</span>
+                    <span class="listJobDetail_jobNotes">{{batchJob.jobNotes}}</span>
+                </li>
+
+            {% endfor %}
+
+            </ul>
+            </li>
+
+        {% endif %}
+
+    {% endfor %}
+                
+    </ul>
+
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/CollapsibleLists.js"/></script>
+    <script type="text/javascript">
+        CollapsibleLists.apply();
+    </script>
+
+{% endblock %}

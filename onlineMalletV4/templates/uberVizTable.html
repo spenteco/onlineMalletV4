@@ -1,0 +1,28 @@
+<table id="uberVizTable" class="tablesorter"> 
+    <thead> 
+    <tr> 
+    {% for c in finalHeaderColumns %}
+        <th celltype="{{c.cellType}}" cellvalue="{{c.cellValue}}">{{c.cellValue}}</th> 
+    {% endfor %}
+    </tr> 
+    </thead> 
+    <tbody> 
+    {% for row in finalMatrixData %}
+        <tr> 
+            {% for c in row %}
+                <td celltype="{{c.cellType}}" cellvalue="{{c.cellValue}}" chunkcount="{{c.chunkCount}}">{{c.cellValue}}</td> 
+            {% endfor %}
+        </tr> 
+    {% endfor %}
+    </tbody> 
+</table>
+<div id="uberVizTopicWords">
+    {% for topic in topicWordData %}
+        <div class="topicDetails"  id="topicWords_{{topic.topic}}">
+            <span class="topicDetailsHeader">Topic {{topic.topic}}</span>
+            {% for word in topic.words %}
+                <span class="topicDetailsWord">{{word.0}}</span> <span class="topicDetailsCount">({{word.1}})</span>
+            {% endfor %}
+        </div>
+    {% endfor %}
+</div>

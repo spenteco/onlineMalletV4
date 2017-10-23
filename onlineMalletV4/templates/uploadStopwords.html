@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <h2>Upload stopwords</h2>
+
+        <span class="fileSelectorLabel">Descriptive name: </span>       <input type="input" name="descriptiveName" id="descriptiveName" class="nameInput" /><br/>
+        <!--<span class="fileSelectorLabel">Notes: </span>                  <textarea rows="4" cols="50" name="notes" id="notes"></textarea><br/>-->
+        <span class="fileSelectorLabel">Select file:  </span>           <input class="fileButton" type="file" name="fileSelector" id="fileSelector" /><br/>
+        <span class="fileSelectorLabel"> </span>                        <button class="myFileButton" type="button" id="fileSubmitStopwords">Upload</button><br/>
+        <span class="fileSelectorLabel"> </span>                        <button class="myFileButton" type="button" id="fileReset">Reset</button><br/>
+         
+        <hr/>
+         
+        <div id="fileUploadList">
+        
+        </div>
+        
+        {% csrf_token %}
+        
+        <div id="existingFiles">
+            {% for stopwordFile in stopwordFileList %}
+                <span class="existingFile" stopwordFileName="{{stopwordFile.stopwordFileName}}" stopwordFileOwner="{{stopwordFile.stopwordFileOwner}}" stopwordDescriptiveName="{{stopwordFile.stopwordDescriptiveName}}"></span>
+            {% endfor %}
+        </div>
+
+        <span id="fileUploadUser">{{user}}</span>
+
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/fileUploads.js"/></script>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+        <title>Online Mallet</title>
+        <link rel="stylesheet" href="/staticOnlineMalletV4/css/onlineMallet.css" type="text/css"/>
+        {% block extrastyle %}{% endblock %}
+        <script type="text/javascript" src="/staticOnlineMalletV4/js/jquery-1.9.0.min.js"></script>
+        <script type="text/javascript" src="/staticOnlineMalletV4/js/onlineMallet.js"></script>
+        {% block extrahead %}{% endblock %}
+    </head>
+    <body id="{% block bodyclass %}{% endblock %}">
+        <div id="content">
+            <div id="header">
+                <h1>Mallet Web Interface</h1>
+                <div class="headerLinkDiv headerLink"><a class="indexLinkA" href="/onlineMalletV4/">Home</a></div>
+                <div class="headerLinkDiv headerLink"><a class="indexLinkA" href="/onlineMalletV4/logout/">Logout</a></div>
+                <div class="headerLinkDiv" id="headerMessage"></div>
+            </div>
+            <div class="clearDiv"></div>
+            {% block content %}
+            {% endblock %}
+            <div id="footer">
+            </div>
+        </div>
+    </body>
+</html>
+

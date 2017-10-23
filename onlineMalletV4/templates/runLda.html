@@ -1,0 +1,651 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% csrf_token %}
+
+    <h2>Run LDA topic modeling</h2>
+
+    <div id="contentDiv">
+        
+        <div class="twoPanes">
+            
+            <div class="leftPane">    
+                <h3>Select corpora and/or files to model</h3>
+        
+                <ul class="collapsibleList">
+                    
+                    {% for owner in corpusOwners %}
+                        <li class="folderLi">    
+                            {{owner}}
+                            <ul>
+                                {% for folder in fileTree %}
+                                    {% if owner == folder.corpusOwner %}
+                                        <li class="folderLi" id="folderLi_{{folder.m}}">   
+                                                        
+                                            {% if folder.corpusName != "TEXTS NOT IN A CORPUS" %}
+                                            
+                                                <input type="checkbox" onchange="javascript:corpusCheckboxChanged('{{folder.m}}');" class="corpusCheckbox" value="{{folder.corpusName}}" id="folderCheckbox_{{folder.m}}" m="{{folder.m}}"/> 
+                                                        
+                                            {% endif %}
+                                            
+                                            {{folder.corpusName}} <!--{{folder.corpusNotes}}-->
+                                            <ul>
+                                                {% for file in folder.textFiles %}
+                                                    <li class="textLi">
+                                                        
+                                                        <input type="checkbox" onchange="javascript:textfileCheckboxChanged('{{file.n}}', '{{folder.m}}');"  class="textCheckBox" value="{{folder.corpusOwner}}/{{file.textFileName}}" id="textFileCheckbox_{{file.n}}" infolder="{{folder.m}}"/> 
+                                        
+                                                        <img src="/staticOnlineMalletV4/img/Text-x-generic.png"/>
+
+                                                        {% if '.txt' in file.textFileName %}
+
+                                                            <span class="textFileName">
+                                                                <a href="/onlineMalletV4/viewfile/?file={{corpusFileLocation}}{{folder.corpusOwner}}/{{file.textFileName}}">{{file.textFileName}}</a>
+                                                            </span>
+
+                                                        {% else %}
+
+                                                            <span class="textFileName">{{file.textFileName}}</span>
+
+                                                        {% endif %}
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                    
+                </ul>
+                
+            </div>
+            
+            <div class="rightPane">
+                <h3>Select stopword file(s)</h3>
+        
+                <ul class="collapsibleList">
+                    
+                    {% for owner in stopwordOwners %}
+                        <li class="folderLi">    
+                            {{owner}}
+                            <ul>
+                                {% for stopwordFile in stopwordFiles %}
+                                    {% if owner == stopwordFile.owner %}
+                                        <li class="textLi">    
+                                            <input type="checkbox" class="stopwordCheckbox" value="{{stopwordFile.subFolder}}{{stopwordFile.fileName}}"/> 
+                                            <span class="viewStopwordsSpan"><a href="/onlineMalletV4/viewfile/?file={{stopwordFileLocation}}{{stopwordFile.subFolder}}{{stopwordFile.fileName}}">{{stopwordFile.fileName}}</a></span>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% endfor %}
+                    
+                </ul>
+                
+            </div>
+        
+        </div>
+        
+        <div class="twoPanes">
+            
+            <div class="leftPane"> 
+                <h3>Enter parameters</h3>
+                <!--
+                <span class="parameterLabel">Sentence chunking</span>
+                <span class="parameterInputSpan">
+                    <input type="checkbox" name="sentenceChunking" id="sentenceChunking" value="yes"/>
+                </span>
+                <br/>
+                
+                <span class="parameterLabel">or</span>
+                <br/>
+                -->
+                <span class="parameterLabel">Chunk size:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="chunkSize" id="chunkSize" class="parameterInput" />
+                </span>
+                <br/>
+                <!--
+                <br/>
+                <hr class="parameterHr"/>
+                <br/>
+                -->
+                <span class="parameterLabel">Low DF percentage:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="lowDFPercentage" id="lowDFPercentage" class="parameterInput" /> %
+                </span>
+                <br/>
+                
+                <span class="parameterLabel">High DF percentage:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="highDFPercentage" id="highDFPercentage" class="parameterInput" /> %
+                </span>
+                <br/>
+                
+                <br/>
+                <hr class="parameterHr"/>
+                <br/>
+                
+                <span class="parameterLabel">Number of topics:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="numberOfTopics" id="numberOfTopics" class="parameterInput" />
+                </span>
+                <br/>
+                
+                <span class="parameterLabel">Number of topic words:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="numberOfTopicWords" id="numberOfTopicWords" class="parameterInput" />
+                </span>
+                <br/>
+                
+                <span class="parameterLabel">Chunk counting threshhold:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="chunkCountingThreshhold" id="chunkCountingThreshhold" class="parameterInput" /> %
+                </span>
+                <br/>
+                
+                <br/>
+                <hr class="parameterHr"/>
+                <br/>
+                
+                <span class="parameterLabel">Number of iterations:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="iterations" id="iterations" class="parameterInput" />
+                </span>
+                <br/>
+                
+                <span class="parameterLabel">Alpha:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="alpha" id="alpha" class="parameterInput" />
+                </span>
+                <br/>
+                
+                <span class="parameterLabel">Optimize interval:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="optimizeInterval" id="optimizeInterval" class="parameterInput" />
+                </span>
+                <br/>
+                
+                <span class="parameterLabel">Optimize burn in:</span>
+                <span class="parameterInputSpan">
+                    <input type="input" name="optimizeBurnIn" id="optimizeBurnIn" class="parameterInput" />
+                </span>
+                <br/>
+                
+                <br/>
+                <hr class="parameterHr"/>
+                <br/>
+                
+                <span class="parameterLabel">&nbsp;</span>
+                <span class="parameterInputSpan">
+                    <button type="button" class="parameterInput" onclick="javascript:checkParameters();">Submit job!</button> 
+                </span>
+                <br/>
+                
+                
+            </div>
+            
+            <div class="rightPane">
+                <h3>Help for parameters</h3>
+                <div class="helpText">
+                    <!--<p><b>Sentence chunking</b> If you want the input texts 
+                    "chunked" into sentences, check here.  <i>Leave unchecked 
+                    to not chunk.</i></p>
+                    <p>or</p>-->
+                    <p><b>Chunk size</b> If you want the input texts 
+                    "chunked" (split into smaller sub-texts), enter a 
+                    value here to specify the size (in tokens) of each 
+                    chunk.  <i>Leave blank to not chunk.</i></p>
+                    <p><b>Low DF percentage</b> Drop words which occur 
+                    in less than this percentage of the documents in 
+                    the corpus.  <i>Leave blank to skip this process.</i></p>
+                    <p><b>High DF percentage</b> Drop words which occur 
+                    in more than this percentage of the documents in 
+                    the corpus.  <i>Leave blank to skip this process.</i></p>
+                    <p><b>Number of topics</b> Enter the number of topics
+                    to be generated by the run.  If you want more than one
+                    set of topics run, then indicate then by separating
+                    the numbers with commas (e.g., to run 10 topics, 20
+                    topics and 30 topics, enter 10,20,30 <i>Required.</i></p>
+                    <p><b>Number of topic words</b> Enter the number of
+                    words that would be listed for each topic.
+                    <i>Required.</i></p>
+                    <p><b>Chunk counting threshhold</b> If the texts were
+                    chunked, enter a percentage threshold.  The system
+                    will count the number of chunks for each text that
+                    exceeded the percentage threshold for each topic.
+                    <i>Leave blank to skip this process.</i></p>
+                    <p><b>Interations</b> Enter a value--an integer
+                    greater than 0--for force Mallet to run a specific
+                    number of iterations.  <i>OK to leave blank.</i></p>
+                    <p><b>Alpha</b> Enter a value--typically something
+                    very small like 0.0001--to keep Mallet
+                    from smoothing topic percentages.  <i>OK to leave 
+                    blank.</i></p>
+                    <p><b>Optimize interval</b> Enter a number which tells
+                    Mallet how often (after how many iteriations) to 
+                    recalculate its "hyperparameters".  <i>OK to leave 
+                    blank, but we recommend entering a value of 10</i></p>
+                    <p><b>Optimize burn in</b> Enter a number which tells
+                    Mallet how many iterations to run before it starts
+                    recalculating its "hyperparameters".<i>OK to leave 
+                    blank, but we recommend entering a value of 10</i></p>
+                </div>
+            </div>
+        
+        </div> 
+        
+        <div class="messages" id="ldaMessages">
+        </div>
+        
+        <div class="addSpaceAtBottom">
+        </div>
+        
+    </div>
+
+    <script type="text/javascript">
+        
+    function myFolderLiClicked(id) {
+        if ($("#" + id).css("display") == "none") {
+            $("#" + id).css("display", "block");
+        }
+        else {
+            $("#" + id).css("display", "none");
+        }
+    }
+      
+    function corpusCheckboxChanged(folderM) {
+        if ($("#folderCheckbox_" + folderM).prop("checked") == true) {
+            $("#folderLi_" + folderM + " .textCheckBox").each(
+                function() {
+                    $(this).prop("checked", true);
+                }
+            );
+        }
+        else {
+            $("#folderLi_" + folderM + " .textCheckBox").each(
+                function() {
+                    $(this).prop("checked", false);
+                }
+            );
+        }
+    }
+      
+    function textfileCheckboxChanged(fileN, folderM) {
+        $("#folderCheckbox_" + folderM).prop("checked", false);
+    }
+      
+    function isInteger(s) {
+
+        result = true;
+
+        if (isNaN(s) == true) {
+            result = false;
+        }
+        else {
+            if (s.indexOf('.') > -1) {
+                result = false;
+            }
+        }       
+
+        return result;
+    }
+      
+    function isFloat(s) {
+
+        result = true;
+
+        if (isNaN(s) == true) {
+            result = false;
+        }
+        else {
+            if (s.indexOf('.') == -1) {
+                result = false;
+            }
+        }       
+
+        return result;
+    }
+      
+    function checkParameters() {
+        
+        var stopwords = new Array();
+        $(".stopwordCheckbox:checked").each(
+            function() {
+                stopwords.push($(this).val());
+            }
+        );
+        
+        var corpora = new Array();
+        var corporaFiles = new Array();
+        $(".corpusCheckbox:checked").each(
+            function() {
+                
+                corpora.push($(this).val());
+                
+                $("#folderLi_" + $(this).attr("m") + " .textCheckBox").each(
+                    function() {
+                        corporaFiles.push($(this).val());
+                    }
+                );
+            }
+        );
+        
+        var individualFiles = new Array();
+        $(".textCheckBox:checked").each(
+            function() {
+                
+                var selectedInCorpus = false;
+                for (var a = 0; a < corporaFiles.length; a++) {
+                    if (corporaFiles[a] == $(this).val()) {
+                        selectedInCorpus = true;
+                    }
+                }
+                
+                if (selectedInCorpus == false) {
+                    individualFiles.push($(this).val());
+                }
+            }
+        );
+        
+        var chunkSize = $("#chunkSize").val().replace(/ +$/, '').replace(/^ +/, '');
+        var lowDFPercentage = $("#lowDFPercentage").val().replace(/ +$/, '').replace(/^ +/, '');
+        var highDFPercentage = $("#highDFPercentage").val().replace(/ +$/, '').replace(/^ +/, '');
+        var numberOfTopics = $("#numberOfTopics").val().replace(/ +$/, '').replace(/^ +/, '');
+        var iterations = $("#iterations").val().replace(/ +$/, '').replace(/^ +/, '');
+        var alpha = $("#alpha").val().replace(/ +$/, '').replace(/^ +/, '');
+        var optimizeInterval = $("#optimizeInterval").val().replace(/ +$/, '').replace(/^ +/, '');
+        var optimizeBurnIn = $("#optimizeBurnIn").val().replace(/ +$/, '').replace(/^ +/, '');
+        var numberOfTopicWords = $("#numberOfTopicWords").val().replace(/ +$/, '').replace(/^ +/, '');
+        var chunkCountingThreshhold = $("#chunkCountingThreshhold").val().replace(/ +$/, '').replace(/^ +/, '');
+        var sentenceChunk = false;
+
+        var csrftoken = getCookie('csrftoken');
+
+        var hasErrors = false;
+
+        if (hasErrors == false) {
+            if (corpora.length == 0 && corporaFiles.length == 0 && individualFiles.length == 0) {
+                alert('Please select corpora and/or files to model');
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors == false) {
+            if (stopwords.length == 0) {
+                var r = confirm("Do you really want to forgo stopwords?\n\nClick OK to proceed; Cancel to halt job submission.");
+                if (r == true) {
+                } else {
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (chunkSize > '') {
+                if (isInteger(chunkSize) == true) {
+                    var n = parseInt(chunkSize);
+                    if (n < 1) {
+                        alert('If not left blank, chunk size must be an integer > 0.');
+                        hasErrors = true;
+                    }
+                }
+                else {
+                    alert('If not left blank, chunk size must be an integer > 0.');
+                    hasErrors = true;
+                }
+            }
+        }
+
+        
+        if (hasErrors == false) {
+            if (lowDFPercentage > '') {
+                if (isInteger(lowDFPercentage) == true) {
+                    var n = parseInt(lowDFPercentage);
+                    if (n < 1 || n > 101) {
+                        alert('If not left blank, low DF percentange must be an integer > 0 and < 101.');
+                        hasErrors = true;
+                    }
+                }
+                else {
+                    alert('If not left blank, low DF percentange must be an integer > 0 and < 101.');
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (highDFPercentage > '') {
+                if (isInteger(highDFPercentage) == true) {
+                    var n = parseInt(highDFPercentage);
+                    if (n < 1 || n > 101) {
+                        alert('If not left blank, high DF percentange must be an integer > 0 and < 101.');
+                        hasErrors = true;
+                    }
+                }
+                else {
+                    alert('If not left blank, high DF percentange must be an integer > 0 and < 101.');
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (numberOfTopics == '') {
+                alert('Number of topics is required.');
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors == false) {
+            var list_numberOfTopics = numberOfTopics.split(',');
+            for (var a = 0; a < list_numberOfTopics.length; a++) {
+                if (isInteger(list_numberOfTopics[a]) == true) {
+                    var n = parseInt(list_numberOfTopics[a]);
+                    if (n < 1) {
+                        alert('Number of topics must be a list of integers > 0 separated by commas.');
+                        hasErrors = true;
+                        break;
+                    }
+                }
+                else {
+                    alert('Number of topics must be a list of integers > 0 separated by commas.');
+                    hasErrors = true;
+                    break;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (numberOfTopicWords == '') {
+                alert('Number of topic words is required.');
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors == false) {
+            if (numberOfTopicWords > '') {
+                if (isInteger(numberOfTopicWords) == true) {
+                    var n = parseInt(numberOfTopicWords);
+                    if (n < 1) {
+                        alert('Number of topic words must be an integer > 0.');
+                        hasErrors = true;
+                    }
+                }
+                else {
+                    alert('Number of topic words must be an integer > 0.');
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (chunkCountingThreshhold > '') {
+                if (isInteger(chunkCountingThreshhold) == true) {
+                    var n = parseInt(chunkCountingThreshhold);
+                    if (n < 1 || n > 101) {
+                        alert('If not left blank, chunk counting threshhold must be an integer > 0 and < 101.');
+                        hasErrors = true;
+                    }
+                }
+                else {
+                    alert('If not left blank, chunk counting threshhold must be an integer > 0 and < 101.');
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (iterations > '') {
+                if (isInteger(iterations) == true) {
+                    var n = parseInt(iterations);
+                    if (n < 1) {
+                        alert('If not left blank, iterations must be an integer > 0.');
+                        hasErrors = true;
+                    }
+                }
+                else {
+                    alert('If not left blank, iterations must be an integer > 0.');
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (alpha > '') {
+                if (isFloat(alpha) == false) {
+                    alert('If not left blank, alpha must be a floating point number (e.g., 0.001) > 0.');
+                    hasErrors = true;
+                }
+                else {
+                    if (parseFloat(alpha) < 0) {
+                        alert('If not left blank, alpha must be a floating point number (e.g., 0.001) > 0.');
+                        hasErrors = true;
+                    }
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (optimizeInterval > '') {
+                if (isInteger(optimizeInterval) == true) {
+                    var n = parseInt(optimizeInterval);
+                    if (n < 1) {
+                        alert('If not left blank, optimize interval must be an integer > 0.');
+                        hasErrors = true;
+                    }
+                }
+                else {
+                    alert('If not left blank, optimize interval must be an integer > 0.');
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (optimizeBurnIn > '') {
+                if (isInteger(optimizeBurnIn) == true) {
+                    var n = parseInt(optimizeBurnIn);
+                    if (n < 1) {
+                        alert('If not left blank, optimize burn in must be an integer > 0.');
+                        hasErrors = true;
+                    }
+                }
+                else {
+                    alert('If not left blank, optimize burn in must be an integer > 0.');
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == false) {
+            if (chunkSize > '' && chunkCountingThreshhold == '') {
+                alert('If chunk size is entered, then chunk counting threshhold is required.');
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors == false) {
+            if (chunkSize == '' && chunkCountingThreshhold > '') {
+                alert('If chunk counting threshhold is entered, then chunk size is required.');
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors == false) {
+            if (lowDFPercentage > '' && highDFPercentage == '') {
+                alert('If low DF percentage is entered, then high DF percentage is required.');
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors == false) {
+            if (lowDFPercentage == '' && highDFPercentage > '') {
+                alert('If high DF percentage is entered, then low DF percentage is required.');
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors == false) {
+            if (parseInt(lowDFPercentage) >= parseInt(highDFPercentage)) {
+                alert('Low DF percentage must be < high DF percentage.');
+                hasErrors = true;
+            }
+        }
+
+        if (hasErrors == false) {
+            if (alpha > '' && optimizeBurnIn > '') {
+                var r = confirm("We haven't testing combining alpha and optimize settings.\nPlease let us know how it works.\n\nClick OK to proceed; Cancel to halt job submission.");
+                if (r == true) {
+                } else {
+                    hasErrors = true;
+                }
+            }
+        }
+
+        if (hasErrors == true) {
+
+            $("#ldaMessages").html('Job was NOT submitted.  Please correct errors.');
+            $("#headerMessage").html('Job was NOT submitted.  Please correct errors.');
+        }
+        else {
+
+            var jsonToServer = {"stopwords": stopwords, "corpora": corpora, "corporaFiles": corporaFiles, "individualFiles": individualFiles, "sentenceChunk": sentenceChunk, "chunkSize": chunkSize, "lowDFPercentage": lowDFPercentage, "highDFPercentage": highDFPercentage, "numberOfTopics": numberOfTopics.replace(/ /g, ""), "iterations": iterations, "alpha": alpha, "optimizeInterval": optimizeInterval, "optimizeBurnIn": optimizeBurnIn, "numberOfTopicWords": numberOfTopicWords, "chunkCountingThreshhold": chunkCountingThreshhold};
+                    
+            var ajaxForm = new FormData();
+            ajaxForm.append("csrfmiddlewaretoken", csrftoken);
+            ajaxForm.append("data", JSON.stringify(jsonToServer));
+
+            $.ajax({
+                type: "POST",
+                async: false,
+                url: "/onlineMalletV4/submitldajob/",
+                data: ajaxForm,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function() {
+                    $("#ldaMessages").html('Job was submitted.');
+                    $("#headerMessage").html('Job was submitted.');
+                },
+                error: function() {
+                    $("#ldaMessages").html('Failed');
+                    $("#headerMessage").html('Failed');
+                },
+            });
+        }
+    }
+        
+    </script>
+
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/CollapsibleLists.js"></script>
+    <script type="text/javascript">
+        CollapsibleLists.apply();    
+    </script>
+    
+
+{% endblock %}

@@ -1,0 +1,5 @@
+{% block content %}
+{% for file in files %}
+    <span class="fileListEntry" id="{{whichPane}}_{{file.n}}" textFileName="{{file.textFileName}}" textFileOwner="{{file.textFileOwner}}"><img src="/staticOnlineMalletV4/img/Text-x-generic.png"> {{file.textFileName}} ({{file.textFileOwner}})</span> 
+{% endfor %} 
+{% endblock %}

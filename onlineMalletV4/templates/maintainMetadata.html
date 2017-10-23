@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div id="contentDiv">
+
+        <h2>Edit metadata for a corpus</h2>
+        
+        <ul class="collapsibleList">
+            
+            {% for folder in fileTree %}
+                <li class="myFolderLi">    
+                    <a href="javascript:myFolderLiClicked('folderToggle_{{folder.m}}');"><img src="/staticOnlineMalletV4/img/Folder.png"/></a> {{folder.corpusName}}
+                    <ul id="folderToggle_{{folder.m}}">
+                        <li class="metadataTextLi">
+                            <span class="metadataFileName">&nbsp;</span>
+                            {% for t in folder.corpusMetadataTypes %}
+                                {% if t.1 == "" %}
+                                    <span>
+                                        <input type="text" class="newMetadataType" corpusName="{{folder.corpusName}}" corpusm="{{folder.m}}" id="newMetadataType_{{folder.m}}" corpusmetadataindex="{{t.0}}" onchange="javascript:handleNewMetadataType('{{folder.m}}');"/>
+                                    </span>
+                                {% else %}
+                                    <span class="metadataTypeHeader" corpusmetadataindex="{{t.0}}" corpusm="{{folder.m}}">{{t.1}}</span>   
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                        {% for file in folder.textFiles %}
+                            <li class="metadataTextLi">
+                                <span class="metadataFileName" id="file_{{file.n}}">{{file.textFileName}}</span>
+                                {% for t in file.metadataTypes %}
+                                    <input corpusName="{{folder.corpusName}}" corpusm="{{folder.m}}" filen="{{file.n}}" metadataindex="{{t.0}}" type="text" class="metadataTypeDetail" value="{{t.2}}" onchange="javascript:handleMetadataTypeDetail('{{folder.m}}', '{{file.n}}', '{{t.0}}');"/>
+                                {% endfor %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+            
+        </ul>
+        
+        
+    </div>
+
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/myCollapsibleLists.js"/></script>
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/maintainMetadata.js"/></script>
+    <script type="text/javascript">
+        collapseFolders();    
+        disableNewDetail();
+    </script>
+    
+{% endblock %}

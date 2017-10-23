@@ -1,0 +1,57 @@
+{% extends "wideBase.html" %}
+
+{% block content %}
+
+    <h2>Overview of results</h2>
+
+    <div id="uberVizFileName">{{fileName}}</div>
+
+    <div id="hiddenJobDetails">
+        <span id="userid">{{userid}}</span>
+        <span id="timestamp">{{timestamp}}</span>
+        <span id="numberOfTopics">{{numberOfTopics}}</span>
+        <span id="fileLocation">{{fileLocation}}</span>
+    </div>
+
+    <div id="numberControls">
+        {% if runChunked == True %}
+            <input type="radio" name="numberFormat" value="numberOfChunks">Number of chunks&nbsp;&nbsp;
+        {% endif %}
+        <!--<input type="radio" name="numberFormat" value="fullValues">Full values&nbsp;&nbsp;-->
+        <input type="radio" name="numberFormat" value="roundedValues">Rounded&nbsp;&nbsp;
+        <input type="radio" name="numberFormat" value="roundedHideZero">Rounded hide zero&nbsp;&nbsp;
+        <!--<input type="radio" name="numberFormat" value="colorCoded">Color coded&nbsp;&nbsp;-->
+    </div>
+
+    <div id="topicWordControls">
+            <span class="topicWordsHeader">Topic words:&nbsp;&nbsp; </span>
+            {% for topic in topicNumbers %}
+                <a class="topicWordsLink" id="topicWordsLink_{{topic}}" href="javascript:handleTopicClick('{{topic}}');">{{topic}}</a>&nbsp;&nbsp; 
+            {% endfor %}
+    </div>
+
+    <div class="clearDiv"></div>
+
+    <div id="uberVizContainer"></div>
+
+    <div id="topicWordsDisplay"></div>
+
+    <div id="textDisplayArea">
+
+        <div id="topicSelector">
+            {% for topic in topicNumbers %}
+                <input type="radio" name="topicNumberSelector" value="{{topic}}">{{topic}}&nbsp;
+            {% endfor %}
+            &nbsp;&nbsp; <a href="javascript:closeTextDisplay();">close</a>
+        </div>
+
+        <div id="highlightTextDisplay"></div>
+    </div>
+
+    <span id="progressDialog"><img src="/staticOnlineMalletV4/img/progress.gif">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="loadingMessage">Processing . . . </span></span>
+
+    <link rel="stylesheet" href="/staticOnlineMalletV4/tablesorterThemes/theme.blue.css" type="text/css"/>
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/jquery.tablesorter.js"/></script>
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/uberViz.js"/></script>
+
+{% endblock %}

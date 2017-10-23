@@ -1,0 +1,21 @@
+
+APPLICATION_ROOT = '/home/data/djangoNew/'
+
+REPO_LOCATION = '/home/data2/onlineMallet/onlineMalletDataRepo/'
+STOPWORDS_REPO_FOLDER = 'stopwords/'
+CORPUS_REPO_FOLDER = 'texts/'
+RESULTS_REPO_LOCATION = 'results/'
+LOG_REPO_LOCATION = 'logs/'
+
+BATCH_SCRIPTS_LOCATION = '/home/data/djangoNew/onlineMalletV4/'
+
+JOB_LOG_LOCATION = '/home/data2/onlineMallet/onlineMalletDataRepo/logs/'
+
+TEMP_LOCATION = '/home/data2/onlineMallet/onlineMalletTemp/'
+
+MALLET_BIN_FOLDER = '/home/spenteco/mallet-2.0.7/bin/'
+
+BATCH_JOB_LIMIT = 2
+
+SITE_PACKAGES = '/home/data/djangoNew/onlineMalletV4/env64/lib/python2.6/site-packages'
+

@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div id="contentDiv">
+
+        <h2>View corpus files</h2>
+        
+        <ul class="collapsibleList">
+            
+            {% for owner in owners %}
+                <li class="folderLi">    
+                    {{owner}}
+                    <ul>
+                        {% for folder in fileTree %}
+                            {% if owner == folder.corpusOwner %}
+                                <li class="folderLi">    
+                                    {{folder.corpusName}} <!--{{folder.corpusNotes}}-->
+                                    <ul>
+                                        {% for file in folder.textFiles %}
+                                            <li class="textLi">
+                                                <img src="/staticOnlineMalletV4/img/Text-x-generic.png"/>
+
+                                                {% if '.txt' in file.textFileName %}
+
+                                                    <span class="textFileName">
+                                                        <a href="/onlineMalletV4/viewfile/?file={{fileLocation}}{{folder.corpusOwner}}/{{file.textFileName}}">{{file.textFileName}}</a>
+                                                    </span>
+
+                                                {% else %}
+
+                                                    <span class="textFileName">{{file.textFileName}}</span>
+
+                                                {% endif %}
+
+                                                <span class="textFileOwner">({{file.textFileOwner}})</span>
+                                                <span class="textFileGitDetails" id="textGitDetails_{{file.n}}">
+                                                    <pre>{{file.gitLogDetails}}</pre>
+                                                </span>       
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+            
+        </ul>
+        
+    </div>
+
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/CollapsibleLists.js"/></script>
+    <script type="text/javascript">
+        CollapsibleLists.apply();    
+    </script>
+    
+{% endblock %}

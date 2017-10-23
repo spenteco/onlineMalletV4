@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <h2>Show job details</h2>
+
+        <div>
+
+            <h3>Job id</h3>
+
+            <span class="detailsLabel">dateTimeRequested</span><span class="detailsData">{{job.dateTimeRequested}}</span><br/>
+            <span class="detailsLabel">jobType</span><span class="detailsData">{{job.jobType}}</span><br/>
+            <span class="detailsLabel">jobStatus</span><span class="detailsData">{{job.jobStatus}}</span><br/>
+            <span class="detailsLabel">id</span><span class="detailsData">{{job.id}}</span><br/>
+            <span class="detailsLabel">userId</span><span class="detailsData">{{job.userId}}</span><br/>
+            <span class="detailsLabel">timestamp</span><span class="detailsData"></span><br/>
+            <!--<span class="detailsLabel">notes</span><span class="detailsData"><textarea id="jobNotes" rows="4" cols="50" onchange="javascript:updateJobNotes('{{job.id}}');">{{job.jobNotes}}</textarea></span><br/>-->
+
+            <h3>Inputs</h3>
+
+            <span class="detailsLabel">corpora</span><span class="detailsData">{{job.corpora}}</span><br/>
+            <span class="detailsLabel">corpora files</span><span class="detailsData">{{job.corporaFiles}}</span><br/>
+            <span class="detailsLabel">individual files</span><span class="detailsData">{{job.individualFiles}}</span><br/>
+            <span class="detailsLabel">numberOfTopics</span><span class="detailsData">{{job.numberOfTopics}}</span><br/>
+            <span class="detailsLabel">stopwords</span><span class="detailsData">{{job.stopwords}}</span><br/>
+            <br/>
+            <span class="detailsLabel">numberOfTopicWords</span><span class="detailsData">{{job.numberOfTopicWords}}</span><br/>
+            <span class="detailsLabel">chunkCountingThreshhold</span><span class="detailsData">{{job.chunkCountingThreshhold}}</span><br/>
+
+            <h3>Settings</h3>
+
+            <!--<span class="detailsLabel">sentenceChunk</span><span class="detailsData">{{job.sentenceChunk}}</span><br/>-->
+            <span class="detailsLabel">chunkSize</span><span class="detailsData">{{job.chunkSize}}</span><br/>
+            <span class="detailsLabel">lowDFPercentage</span><span class="detailsData">{{job.lowDFPercentage}}</span><br/>
+            <span class="detailsLabel">highDFPercentage</span><span class="detailsData">{{job.highDFPercentage}}</span><br/>
+            <span class="detailsLabel">iterations</span><span class="detailsData">{{job.iterations}}</span><br/>
+            <span class="detailsLabel">alpha</span><span class="detailsData">{{job.alpha}}</span><br/>
+            <span class="detailsLabel">optimizeInterval</span><span class="detailsData">{{job.optimizeInterval}}</span><br/>
+            <span class="detailsLabel">optimizeBurnIn</span><span class="detailsData">{{job.optimizeBurnIn}}</span><br/>
+
+            {% if job.jobStatus == "Completed" %}
+
+                <h3>Outputs</h3>
+
+                <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{job.logfileName}}">Job log (.log)</a></span><br/>
+
+                {% for topic in job.topicOutputs %}
+                    <h4>{{topic.numberOfTopics}} topics</h4>
+
+                     <span class="detailsData"><a href="/onlineMalletV4/startuberviz/?fileName={{topic.uberviz}}&id={{job.id}}&topics={{topic.numberOfTopics}}">Overview of results</a></span><br/>
+                    <br/>
+                    <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.matrix}}">Text-topic matrix (.tsv)</a></span><br/>
+                    <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.matrixWithMetadata}}">Matrix with metadata  (.tsv)</a></span><br/>
+                    <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.topicPcts}}">Text-topic pcts  (.tsv)</a></span><br/>
+                    <br/>
+                    <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.distanceMatrix}}">Distance matrix  (.tsv)</a></span><br/>
+                    <!--
+                    <span class="detailsData"><a href="/onlineMalletV4/showheatmap/?fileName={{topic.heatMap}}">Distance heat map</a></span><br/>-->
+                    <br/>
+                    <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.topicWords}}">Topic words  (.tsv)</a></span><br/>
+                    <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.rawTopicWords}}">Topic words from mallet (.txt)</a></span><br/>
+
+                    {% if topic.averagedMatrixWithMetadata %}
+                        <br/>
+                        <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.averagedMatrixWithMetadata}}">Whole text topic averages (.tsv)</a></span><br/>
+                        <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.countMatrixWithMetadata}}">Whole text topic chunk counts (.tsv)</a></span><br/>
+                    {% endif %}
+                    <br/>
+
+                    <span class="detailsData"><a href="/onlineMalletV4/getresultsfile/?fileName={{topic.model}}">Serialized mallet topic trainer (.model)</a></span><br/>
+
+                {% endfor %}
+
+            {% endif %}
+
+            <br/>
+            <br/>
+            
+        </div>
+
+    <script type="text/javascript">
+
+function updateJobNotes(jobId) {
+
+    var result = getHtmlSnippet("/onlineMalletV4/updatejobnotes/?jobId=" + jobId + "&jobNotes=" + $("#jobNotes").val());
+}
+    </script>
+
+{% endblock %}

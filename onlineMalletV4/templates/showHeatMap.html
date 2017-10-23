@@ -1,0 +1,17 @@
+{% extends "wideBase.html" %}
+
+{% block content %}
+
+    <h2>Distance heatmap</h2>
+
+    <p>Bright blue is very close.  Bright red is very far.  Mousover for details.</p>
+
+    <div id="heatMapFileName">{{fileName}}</div>
+
+    <div id="heatmapContainer"></div>
+    
+    <div id="heatmapTooltip"></div>
+
+    <script type="text/javascript" src="/staticOnlineMalletV4/js/heatMap.js"/></script>
+
+{% endblock %}

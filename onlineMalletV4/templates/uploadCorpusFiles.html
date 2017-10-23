@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+        <h2>Upload corpus files</h2>
+
+        <span class="fileSelectorLabel">Select existing corpus: </span> <select id="existingCorpusInput">
+                                                                            <option value=""></option>
+                                                                            {% for existingCorpus in existingCorpora %}
+                                                                                <option value="{{existingCorpus.corpusName}}">{{existingCorpus.corpusName}}</option>
+                                                                            {% endfor %}
+                                                                        </select> 
+        
+        <br/><br/>
+        
+        <span class="fileSelectorLabel">or enter: </span> 
+        
+        <br/><br/>
+        
+        <span class="fileSelectorLabel">New corpus name: </span>        <input type="input" name="newCorpusName" id="newCorpusName" class="nameInput" /><br/>
+        <!--<span class="fileSelectorLabel">Notes: </span>                  <textarea rows="4" cols="50" name="notes" id="notes"></textarea><br/>-->
+        
+        <br/>
+        
+        <span class="fileSelectorLabel">Select file:  </span>           <input class="fileButton" type="file" name="fileSelector" id="fileSelector" multiple /><br/>
+        <span class="fileSelectorLabel"> </span>                        <button class="myFileButton" type="button" id="fileSubmitCorpus">Upload</button><br/>
+        <span class="fileSelectorLabel"> </span>                        <button class="myFileButton" type="button" id="fileReset">Reset</button><br/>
+         
+        <hr/>
+         
+        <div id="fileUploadList">
+        </div>
+        
+        <div id="existingFiles">
+            {% for corpusFile in corpusFileFileList %}
+                <span class="existingFile" textFileOwner="{{corpusFile.textFileOwner}}" textFileName="{{corpusFile.textFileName}}"></span>
+            {% endfor %}
+        </div>
+        
+        {% csrf_token %}
+
+        <span id="fileUploadUser">{{user}}</span>
+
+        <script type="text/javascript" src="/staticOnlineMalletV4/js/fileUploads.js"/></script>
+
+{% endblock %}
